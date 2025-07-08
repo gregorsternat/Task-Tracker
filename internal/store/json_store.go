@@ -111,7 +111,12 @@ func (s *JSONStore) Delete(id int) error {
 func (s *JSONStore) FindAll() ([]model.Task, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	return s.loadTasks()
+
+	tasks, err := s.loadTasks()
+	if err != nil {
+		return nil, fmt.Errorf("loadTasks(): %w", err)
+	}
+	return tasks, nil
 }
 
 func (s *JSONStore) FindByID(id int) (model.Task, error) {
